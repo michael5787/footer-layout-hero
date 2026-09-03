@@ -29,6 +29,13 @@
       "when": 1788436912827,
       "tag": "0003_madaurous_full_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1788436945278,
+      "tag": "0004_madaurous_storage_policies",
+      "breakpoints": true
     }
   ]
 }
