@@ -25,12 +25,12 @@ export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-border/60 bg-background/70 backdrop-blur">
       <div className="mx-auto w-full max-w-5xl px-4 py-6 text-sm">
-        <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-10">
+<div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
           <Wordmark />
 
           <nav
             aria-label="روابط الموقع"
-            className="grid grid-cols-2 gap-x-10 gap-y-2 text-center sm:text-start"
+            className="hidden grid-cols-2 gap-x-10 gap-y-2 text-start sm:grid"
           >
             {LINKS.map((link) => (
               <Link
