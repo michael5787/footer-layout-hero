@@ -4,7 +4,6 @@ const LINKS = [
   { to: "/", label: "الرئيسية" },
   { to: "/talameed", label: "فضاء التلاميذ" },
   { to: "/taleem", label: "فضاء التعليم" },
-  { to: "/admin", label: "فضاء الإدارة" },
 ] as const;
 
 function Wordmark() {
@@ -25,18 +24,19 @@ export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-border/60 bg-background/70 backdrop-blur">
       <div className="mx-auto w-full max-w-5xl px-4 py-6 text-sm">
-<div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
+        <div className="flex flex-col items-center gap-4 lg:flex-row lg:items-center lg:justify-between">
           <Wordmark />
 
+          {/* Links: single row, desktop only (hidden on mobile and tablet) */}
           <nav
             aria-label="روابط الموقع"
-            className="hidden grid-cols-2 gap-x-10 gap-y-2 text-start sm:grid"
+            className="hidden items-center gap-8 lg:flex"
           >
             {LINKS.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className="whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
               >
                 {link.label}
               </Link>
