@@ -36,6 +36,13 @@
       "when": 1788436945278,
       "tag": "0004_madaurous_storage_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791358404810,
+      "tag": "0005_import_latest_features",
+      "breakpoints": true
     }
   ]
 }
