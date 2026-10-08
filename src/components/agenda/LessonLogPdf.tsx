@@ -54,7 +54,7 @@ function buildHtml(
     )
     .join("");
   return `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">
-<title>دفتر الدروس ${from} — ${to}</title>
+<title>المذكرة ${from} — ${to}</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -88,7 +88,7 @@ function buildHtml(
   .sign div { width: 40%; border-top: 1px dashed #9aa79f; padding-top: 6px; text-align: center; }
 </style></head><body>
 <header>
-  <h1>دفتر الدروس</h1>
+  <h1>المذكرة</h1>
   ${teacherName ? `<p class="teacher"><span>الأستاذ(ة)</span>${esc(teacherName)}</p>` : ""}
   ${levelNames.length ? `<p>المستويات: ${esc(levelNames.join("، "))}</p>` : ""}
   ${usedClassNames.length ? `<p class="classes">الأقسام: ${esc(usedClassNames.join("، "))}</p>` : ""}
