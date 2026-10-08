@@ -216,7 +216,7 @@ export function LessonLogPdfButton({
           page += 1;
         }
         const clsName = classId ? `-${classes.find((c) => c.id === classId)?.name ?? ""}` : "";
-        pdf.save(`دفتر-الدروس${clsName}-${from}_${to}.pdf`);
+        pdf.save(`المذكرة${clsName}-${from}_${to}.pdf`);
       } finally {
         iframe.remove();
       }
