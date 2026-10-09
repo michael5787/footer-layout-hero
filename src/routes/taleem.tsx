@@ -72,6 +72,8 @@ function TeacherShell({
 }) {
   const [tab, setTab] = useSpaceSection<Tab>("taleem", userId, "resources", ["resources", "agenda", "evaluations", "questions", "answers", "students", "notifications", "account"]);
   const [classes, setClasses] = useState<ClassRow[]>([]);
+  const [evalFilter, setEvalFilter] = useState<AgendaFilter>(EMPTY_FILTER);
+  const evalMonths = useAgendaMonths(client, classes.map((c) => c.id));
   const notifications = useNotifications(client, userId);
 
   useEffect(() => {
@@ -147,7 +149,8 @@ function TeacherShell({
           <TeacherAgenda client={client} teacherId={userId} classes={classes} />
             ) : tab === "evaluations" ? (
           <div className="space-y-6">
-            <TeacherEvaluations client={client} classes={classes} />
+            <AgendaFilterBar classes={classes} months={evalMonths} filter={evalFilter} onChange={setEvalFilter} />
+            <TeacherEvaluations client={client} classes={classes} filter={evalFilter} />
             <TeacherHomeworks client={client} classes={classes} />
           </div>
         ) : tab === "questions" ? (
