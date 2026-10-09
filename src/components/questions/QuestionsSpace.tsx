@@ -27,18 +27,10 @@ export function QuestionsSpace(props: {
 }) {
   const { client, userId, userName, role } = props;
   const isAdmin = !!props.isAdmin && role === "teacher";
-  const [selected, setSelected] = useState<string | null>(
-    role === "student" ? props.classId ?? null : props.isAdmin ? null : props.classes?.[0]?.id ?? null,
-  );
-
-  useEffect(() => {
-    if (role === "teacher" && !isAdmin && !selected && props.classes?.length) {
-      setSelected(props.classes[0]!.id);
-    }
-  }, [role, isAdmin, selected, props.classes]);
+  const [selected, setSelected] = useState<string | null>(null);
 
   const classId = role === "student" ? props.classId ?? null : selected;
-  const { items, loading, error, setError, reload } = useQuestions(client, classId, isAdmin);
+  const { items, loading, error, setError, reload } = useQuestions(client, classId, role === "teacher");
   const className = (id: string) => props.classes?.find((c) => c.id === id)?.name ?? "";
   const allChapters = useChapters(client);
   const chapterName = (id: string | null) =>
@@ -68,8 +60,7 @@ export function QuestionsSpace(props: {
             onChange={(e) => setSelected(e.target.value || null)}
             aria-label="اختيار القسم"
           >
-            {isAdmin ? <option value="">كل الأقسام</option> : null}
-            {!isAdmin && (props.classes ?? []).length === 0 ? <option value="">لا توجد أقسام</option> : null}
+            {(props.classes ?? []).length > 0 ? <option value="">كل الأقسام</option> : <option value="">لا توجد أقسام</option>}
             {(props.classes ?? []).map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -103,7 +94,7 @@ export function QuestionsSpace(props: {
       ) : items.length === 0 ? (
         <div className="mt-6 flex flex-col items-center gap-4 rounded-2xl border border-dashed border-border bg-card/60 px-6 py-12 text-center">
           <Butterfly />
-          <p className="text-sm text-muted-foreground">لا توجد أسئلة في هذا القسم بعد.</p>
+          <p className="text-sm text-muted-foreground">{classId ? "لا توجد أسئلة في هذا القسم بعد." : "لا توجد أسئلة بعد."}</p>
         </div>
       ) : (
         <ul className="mt-6 space-y-4">
@@ -114,6 +105,7 @@ export function QuestionsSpace(props: {
               item={q}
               role={role}
               isAdmin={isAdmin}
+              showClass={isAdmin || classId === null}
               className={className(q.class_id)}
               chapterName={chapterName(q.chapter_id)}
               userId={userId}
@@ -305,6 +297,7 @@ function QuestionCard({
   item,
   role,
   isAdmin,
+  showClass,
   className,
   chapterName,
   userId,
@@ -316,6 +309,7 @@ function QuestionCard({
   item: QuestionItem;
   role: "student" | "teacher";
   isAdmin: boolean;
+  showClass: boolean;
   className: string;
   chapterName: string;
   userId: string;
@@ -414,7 +408,7 @@ function QuestionCard({
           <div className="text-sm font-semibold text-foreground">{item.title}</div>
           <div className="mt-1 text-xs text-muted-foreground">
             {item.student_name} • {formatDate(item.created_at)} • {chapterName}
-            {isAdmin && className ? ` • ${className}` : ""}
+            {showClass && className ? ` • ${className}` : ""}
           </div>
         </div>
         {(role === "student" && item.student_id === userId) || isAdmin ? (
