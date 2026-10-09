@@ -9,6 +9,7 @@ import { TeacherSubmissions } from "@/components/resources/TeacherSubmissions";
 import { TeacherAgenda } from "@/components/agenda/TeacherAgenda";
 import { QuestionsSpace } from "@/components/questions/QuestionsSpace";
 import { TeacherEvaluations } from "@/components/grades/Grades";
+import { AgendaFilterBar, EMPTY_FILTER, useAgendaMonths, type AgendaFilter } from "@/components/grades/AgendaFilters";
 import { TeacherHomeworks } from "@/components/grades/Homework";
 import { ClassStudents } from "@/components/students/ClassStudents";
 import { NotificationsPanel } from "@/components/NotificationsPanel";
