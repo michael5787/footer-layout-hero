@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      absences: {
+        Row: {
+          class_id: string | null
+          created_at: string
+          end_date: string
+          id: string
+          justified: boolean
+          reason: string | null
+          start_date: string
+          student_id: string
+          teacher_id: string
+        }
+        Insert: {
+          class_id?: string | null
+          created_at?: string
+          end_date: string
+          id?: string
+          justified?: boolean
+          reason?: string | null
+          start_date: string
+          student_id: string
+          teacher_id: string
+        }
+        Update: {
+          class_id?: string | null
+          created_at?: string
+          end_date?: string
+          id?: string
+          justified?: boolean
+          reason?: string | null
+          start_date?: string
+          student_id?: string
+          teacher_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "absences_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agenda_events: {
         Row: {
           class_id: string
@@ -67,6 +111,47 @@ export type Database = {
             columns: ["resource_id"]
             isOneToOne: false
             referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      behavior_grades: {
+        Row: {
+          class_id: string | null
+          comment: string | null
+          created_at: string
+          grade: number
+          id: string
+          student_id: string
+          teacher_id: string
+          updated_at: string
+        }
+        Insert: {
+          class_id?: string | null
+          comment?: string | null
+          created_at?: string
+          grade: number
+          id?: string
+          student_id: string
+          teacher_id: string
+          updated_at?: string
+        }
+        Update: {
+          class_id?: string | null
+          comment?: string | null
+          created_at?: string
+          grade?: number
+          id?: string
+          student_id?: string
+          teacher_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "behavior_grades_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
             referencedColumns: ["id"]
           },
         ]
