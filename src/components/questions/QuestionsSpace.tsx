@@ -27,10 +27,14 @@ export function QuestionsSpace(props: {
 }) {
   const { client, userId, userName, role } = props;
   const isAdmin = !!props.isAdmin && role === "teacher";
-  const [selected, setSelected] = useState<string | null>(null);
+  // Teachers open on "كل الأقسام" (all their classes) by default.
+  const [selected, setSelected] = useState<string | null>(
+    role === "student" ? props.classId ?? null : null,
+  );
 
   const classId = role === "student" ? props.classId ?? null : selected;
-  const { items, loading, error, setError, reload } = useQuestions(client, classId, role === "teacher");
+  const allClasses = role === "teacher" && classId === null;
+  const { items, loading, error, setError, reload } = useQuestions(client, classId, allClasses);
   const className = (id: string) => props.classes?.find((c) => c.id === id)?.name ?? "";
   const allChapters = useChapters(client);
   const chapterName = (id: string | null) =>
@@ -60,7 +64,8 @@ export function QuestionsSpace(props: {
             onChange={(e) => setSelected(e.target.value || null)}
             aria-label="اختيار القسم"
           >
-            {(props.classes ?? []).length > 0 ? <option value="">كل الأقسام</option> : <option value="">لا توجد أقسام</option>}
+            <option value="">كل الأقسام</option>
+            {!isAdmin && (props.classes ?? []).length === 0 ? <option value="" disabled>لا توجد أقسام</option> : null}
             {(props.classes ?? []).map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -94,7 +99,9 @@ export function QuestionsSpace(props: {
       ) : items.length === 0 ? (
         <div className="mt-6 flex flex-col items-center gap-4 rounded-2xl border border-dashed border-border bg-card/60 px-6 py-12 text-center">
           <Butterfly />
-          <p className="text-sm text-muted-foreground">{classId ? "لا توجد أسئلة في هذا القسم بعد." : "لا توجد أسئلة بعد."}</p>
+          <p className="text-sm text-muted-foreground">
+            {allClasses ? "لا توجد أسئلة بعد." : "لا توجد أسئلة في هذا القسم بعد."}
+          </p>
         </div>
       ) : (
         <ul className="mt-6 space-y-4">
@@ -105,7 +112,7 @@ export function QuestionsSpace(props: {
               item={q}
               role={role}
               isAdmin={isAdmin}
-              showClass={isAdmin || classId === null}
+              showClass={allClasses}
               className={className(q.class_id)}
               chapterName={chapterName(q.chapter_id)}
               userId={userId}
