@@ -200,6 +200,7 @@ export function GradeForm({
   const [existing, setExisting] = useState<GradeRow[]>([]);
   const [evalId, setEvalId] = useState("");
   const [grade, setGrade] = useState("");
+  const [undetermined, setUndetermined] = useState(false);
   const [comment, setComment] = useState("");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
@@ -214,7 +215,8 @@ export function GradeForm({
 
   useEffect(() => {
     const g = existing.find((x) => x.evaluation_id === evalId);
-    setGrade(g ? String(g.grade) : "");
+    setGrade(g?.grade != null ? String(g.grade) : "");
+    setUndetermined(g ? g.grade == null : false);
     setComment(g?.comment ?? "");
   }, [evalId, existing]);
 
