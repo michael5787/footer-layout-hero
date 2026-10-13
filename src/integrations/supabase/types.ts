@@ -63,39 +63,42 @@ export type Database = {
           class_id: string
           created_at: string
           description: string | null
-          event_date: string
+          event_date: string | null
           id: string
           kind: Database["public"]["Enums"]["agenda_kind"]
           link_url: string | null
           resource_id: string | null
           teacher_id: string
           title: string
+          trimester: string | null
           updated_at: string
         }
         Insert: {
           class_id: string
           created_at?: string
           description?: string | null
-          event_date: string
+          event_date?: string | null
           id?: string
           kind?: Database["public"]["Enums"]["agenda_kind"]
           link_url?: string | null
           resource_id?: string | null
           teacher_id: string
           title: string
+          trimester?: string | null
           updated_at?: string
         }
         Update: {
           class_id?: string
           created_at?: string
           description?: string | null
-          event_date?: string
+          event_date?: string | null
           id?: string
           kind?: Database["public"]["Enums"]["agenda_kind"]
           link_url?: string | null
           resource_id?: string | null
           teacher_id?: string
           title?: string
+          trimester?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -225,6 +228,60 @@ export type Database = {
             columns: ["level_id"]
             isOneToOne: false
             referencedRelation: "levels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_files: {
+        Row: {
+          chapter_id: string | null
+          created_at: string
+          file_name: string
+          file_path: string
+          id: string
+          level_id: string
+          mime_type: string | null
+          size_bytes: number | null
+          teacher_id: string
+          title: string
+        }
+        Insert: {
+          chapter_id?: string | null
+          created_at?: string
+          file_name: string
+          file_path: string
+          id?: string
+          level_id: string
+          mime_type?: string | null
+          size_bytes?: number | null
+          teacher_id: string
+          title: string
+        }
+        Update: {
+          chapter_id?: string | null
+          created_at?: string
+          file_name?: string
+          file_path?: string
+          id?: string
+          level_id?: string
+          mime_type?: string | null
+          size_bytes?: number | null
+          teacher_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_files_level_id_fkey"
+            columns: ["level_id"]
+            isOneToOne: false
+            referencedRelation: "levels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_files_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
