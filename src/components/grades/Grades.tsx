@@ -224,11 +224,17 @@ export function GradeForm({
     e.preventDefault();
     const n = Number(grade.replace(",", "."));
     if (!evalId) return setMsg("اختر التقييم.");
-    if (!Number.isFinite(n) || n < 0 || n > 20) return setMsg("النقطة يجب أن تكون بين 0 و 20.");
+    if (!undetermined && (!Number.isFinite(n) || n < 0 || n > 20)) return setMsg("النقطة يجب أن تكون بين 0 و 20.");
     setBusy(true);
     setMsg(null);
     const { error } = await client.from("evaluation_grades").upsert(
-      { evaluation_id: evalId, student_id: studentId, teacher_id: teacherId, grade: n, comment: comment.trim() || null },
+      {
+        evaluation_id: evalId,
+        student_id: studentId,
+        teacher_id: teacherId,
+        grade: undetermined ? null : n,
+        comment: comment.trim() || null,
+      },
       { onConflict: "evaluation_id,student_id" },
     );
     setBusy(false);
@@ -258,8 +264,18 @@ export function GradeForm({
         placeholder="النقطة /20"
         value={grade}
         onChange={(e) => setGrade(e.target.value)}
+        disabled={undetermined}
         aria-label="النقطة"
       />
+      <label className="flex items-center gap-1.5 text-xs text-muted-foreground">
+        <input
+          type="checkbox"
+          checked={undetermined}
+          onChange={(e) => setUndetermined(e.target.checked)}
+          className="accent-primary"
+        />
+        غير محدد (لم يلتحق بعد)
+      </label>
       <input
         className="field-input text-sm"
         placeholder="ملاحظة (اختياري)"
