@@ -291,7 +291,7 @@ export type Database = {
           comment: string | null
           created_at: string
           evaluation_id: string
-          grade: number
+          grade: number | null
           id: string
           student_id: string
           teacher_id: string
@@ -301,7 +301,7 @@ export type Database = {
           comment?: string | null
           created_at?: string
           evaluation_id: string
-          grade: number
+          grade?: number | null
           id?: string
           student_id: string
           teacher_id: string
@@ -311,7 +311,7 @@ export type Database = {
           comment?: string | null
           created_at?: string
           evaluation_id?: string
-          grade?: number
+          grade?: number | null
           id?: string
           student_id?: string
           teacher_id?: string
@@ -911,6 +911,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_placeholder_student: {
+        Args: { _class_id: string; _first_name: string; _last_name: string }
+        Returns: Json
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
