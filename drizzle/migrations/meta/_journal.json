@@ -85,6 +85,13 @@
       "when": 1791964180417,
       "tag": "0011_create_placeholder_student",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1791968694210,
+      "tag": "0012_edit_delete_placeholder_student",
+      "breakpoints": true
     }
   ]
 }
