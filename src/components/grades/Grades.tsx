@@ -134,8 +134,8 @@ export function TeacherEvaluations({
         <ul className="mt-6 space-y-3">
           {filtered.map((r) => {
             const g = grades.filter((x) => x.evaluation_id === r.id);
-            const valid = g.filter((x) => x.grade != null);
-            const avg = valid.length ? valid.reduce((s, x) => s + Number(x.grade), 0) / valid.length : null;
+            const scored = g.filter((x) => x.grade != null);
+            const avg = scored.length ? scored.reduce((s, x) => s + Number(x.grade), 0) / scored.length : null;
             return (
               <li key={r.id} className="resource-card p-4">
                 <button
@@ -171,7 +171,7 @@ export function TeacherEvaluations({
                           {x.grade != null ? (
                             <span className="font-semibold">{fmt(x.grade)}/20</span>
                           ) : (
-                            <span className="text-muted-foreground">غير محدد</span>
+                            <span className="text-xs text-muted-foreground">لم يحدد بعد</span>
                           )}
                         </li>
                       ))}
@@ -233,13 +233,7 @@ export function GradeForm({
     setBusy(true);
     setMsg(null);
     const { error } = await client.from("evaluation_grades").upsert(
-      {
-        evaluation_id: evalId,
-        student_id: studentId,
-        teacher_id: teacherId,
-        grade: undetermined ? null : n,
-        comment: comment.trim() || null,
-      },
+      { evaluation_id: evalId, student_id: studentId, teacher_id: teacherId, grade: undetermined ? null : n, comment: comment.trim() || null },
       { onConflict: "evaluation_id,student_id" },
     );
     setBusy(false);
@@ -263,24 +257,25 @@ export function GradeForm({
           </option>
         ))}
       </select>
-      <input
-        className="field-input text-sm"
-        inputMode="decimal"
-        placeholder="النقطة /20"
-        value={grade}
-        onChange={(e) => setGrade(e.target.value)}
-        disabled={undetermined}
-        aria-label="النقطة"
-      />
-      <label className="flex items-center gap-1.5 text-xs text-muted-foreground">
+      <div className="flex items-center gap-2">
         <input
-          type="checkbox"
-          checked={undetermined}
-          onChange={(e) => setUndetermined(e.target.checked)}
-          className="accent-primary"
+          className="field-input text-sm"
+          inputMode="decimal"
+          placeholder="النقطة /20"
+          value={grade}
+          onChange={(e) => setGrade(e.target.value)}
+          aria-label="النقطة"
+          disabled={undetermined}
         />
-        غير محدد (لم يلتحق بعد)
-      </label>
+        <label className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
+          <input
+            type="checkbox"
+            checked={undetermined}
+            onChange={(e) => setUndetermined(e.target.checked)}
+          />
+          غير محدد
+        </label>
+      </div>
       <input
         className="field-input text-sm"
         placeholder="ملاحظة (اختياري)"
@@ -510,9 +505,7 @@ export function StudentGrades({ client, classId, studentId, trimester = "" }: { 
                       {fmt(g.grade)}/20
                     </span>
                   ) : (
-                    <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
-                      لم يحدد بعد
-                    </span>
+                    <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">لم يحدد بعد</span>
                   )
                 ) : (
                   <span className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">لم تُسجَّل بعد</span>
